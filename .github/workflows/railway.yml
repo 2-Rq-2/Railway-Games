@@ -1,5 +1,4 @@
 name: File Switch Workflow
-
 on:
   push:
     branches: [main]
@@ -12,8 +11,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-        with:
-          repository: 2-Rq-2/Railway-Games
 
       - name: Configure Git
         run: |
@@ -24,30 +21,26 @@ jobs:
       - name: Check File Existence
         run: |
           current_hour=$(TZ='Asia/Singapore' date +"%H")
-          if [[ $current_hour -ge 6 && $current_hour -lt 21 ]]; then
+          if [[ $current_hour -eq 6 ]]; then
             if [[ -f "app2.js" ]]; then
-              if [[ -f "app.js" ]]; then
-                rm -f app.js
-                echo "Deleted app.js"
-              fi
               mv app2.js app.js
               echo "Switched to app.js"
             else
               echo "app2.js not found, skipping file switch"
             fi
-          else
+          elif [[ $current_hour -eq 22 ]]; then
             if [[ -f "app.js" ]]; then
-              if [[ -f "app2.js" ]]; then
-                rm -f app2.js
-                echo "Deleted app2.js"
-              fi
+              mv app.js app2.js
+              echo "Switched to app2.js"
+            else
+              echo "app.js not found, skipping file switch"
             fi
+          else
             echo "Skipping file switch"
           fi
 
-      - name: Commit Changes
+      - name: Commit and Push Changes
         run: |
-          git add app.js app2.js
+          git add .
           git commit -m "File switch" || true
           git push origin HEAD
-
