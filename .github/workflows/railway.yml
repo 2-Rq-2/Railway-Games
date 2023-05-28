@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: "5,10,15,20,25,30,35,40,45,50,55 * * * *"
+    - cron: "0 22,13 * * *"
 
 jobs:
   toggle:
@@ -18,14 +18,23 @@ jobs:
           git config --global user.email "loslao11@mailbox.org"
           git config --global credential.helper store
 
-      - name: Check if app.js exists
+      - name: Check File Existence and Switch
         run: |
-          if [[ -f "app.js" ]]; then
-            echo "app.js file exists"
-            mv app.js app2.js
-            echo "Switched to app2.js"
-          else
-            echo "app.js not found, skipping file switch"
+          current_hour=$(TZ='Asia/Singapore' date +"%H")
+          if [[ $current_hour -eq 6 ]]; then
+            if [[ -f "app2.js" ]]; then
+              mv app2.js app.js
+              echo "Switched to app.js"
+            else
+              echo "app2.js not found, skipping file switch"
+            fi
+          elif [[ $current_hour -eq 21 ]]; then
+            if [[ -f "app.js" ]]; then
+              mv app.js app2.js
+              echo "Switched to app2.js"
+            else
+              echo "app.js not found, skipping file switch"
+            fi
           fi
 
       - name: Commit and Push Changes
