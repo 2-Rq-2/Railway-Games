@@ -1,0 +1,37 @@
+name: Evening Workflow
+on:
+  schedule:
+    - cron: "0 13 * * *"
+
+jobs:
+  toggle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          repository: 2-Rq-2/Railway-Games  # 替换为您的仓库地址
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "2-Rq-2"
+          git config --global user.email "loslao11@mailbox.org"
+          git config --global credential.helper store
+
+      - name: Check File Existence
+        run: |
+          current_hour=$(TZ='Asia/Singapore' date +"%H")
+          if [[ $current_hour -ge 6 && $current_hour -lt 21 ]]; then
+            echo "Skipping file switch"
+          else
+            if [[ -f "app.js" ]]; then
+              mv app.js app2.js
+              echo "Switched to app2.js"
+
+              git add app2.js
+              git commit -m "Switched to app2.js"
+              git push origin HEAD
+            else
+              echo "app.js not found, skipping file switch"
+            fi
+          fi
