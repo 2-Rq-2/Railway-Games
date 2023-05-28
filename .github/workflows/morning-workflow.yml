@@ -10,7 +10,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
-          repository: 2-Rq-2/Railway-Games  # 替换为您的仓库地址
+          repository: 2-Rq-2/Railway-Games
 
       - name: Configure Git
         run: |
