@@ -8,32 +8,32 @@ on:
 jobs:
   toggle:
     runs-on: ubuntu-latest
-  steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Configure Git
-      run: |
-        git config --global user.name "2-Rq-2"
-        git config --global user.email "loslao11@mailbox.org"
-        git config --global credential.helper store
+      - name: Configure Git
+        run: |
+          git config --global user.name "2-Rq-2"
+          git config --global user.email "loslao11@mailbox.org"
+          git config --global credential.helper store
 
-    - name: Check File Existence and Switch
-      run: |
-        current_minute=$(date +"%M")
-        if [[ $current_minute -eq 5 || $current_minute -eq 10 || $current_minute -eq 15 || $current_minute -eq 20 || $current_minute -eq 25 || $current_minute -eq 30 || $current_minute -eq 35 || $current_minute -eq 40 || $current_minute -eq 45 || $current_minute -eq 50 || $current_minute -eq 55 ]]; then
-          if [[ -f "app2.js" ]]; then
-            mv app2.js app.js
-            echo "Switched to app.js"
+      - name: Check File Existence and Switch
+        run: |
+          current_minute=$(date +"%M")
+          if [[ $current_minute == 5 || $current_minute == 10 || $current_minute == 15 || $current_minute == 20 || $current_minute == 25 || $current_minute == 30 || $current_minute == 35 || $current_minute == 40 || $current_minute == 45 || $current_minute == 50 || $current_minute == 55 ]]; then
+            if [[ -f "app2.js" ]]; then
+              mv app2.js app.js
+              echo "Switched to app.js"
+            else
+              echo "app2.js not found, skipping file switch"
+            fi
           else
-            echo "app2.js not found, skipping file switch"
+            echo "Skipping file switch"
           fi
-        else
-          echo "Skipping file switch"
-        fi
 
-    - name: Commit and Push Changes
-      run: |
-        git add .
-        git commit -m "File switch" || true
-        git push origin HEAD
+      - name: Commit and Push Changes
+        run: |
+          git add .
+          git commit -m "File switch" || true
+          git push origin HEAD
