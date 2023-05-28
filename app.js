@@ -60,13 +60,13 @@ app.get("/test", (req, res) => {
 });
 
 app.use(
-  "/api-railway",
+  "/vless-bcdeaea2-5e91-46ea-8ef0-5b37e394faa7",
   createProxyMiddleware({
     target: "http://127.0.0.1:8080/",
     changeOrigin: true, 
     ws: true, 
     pathRewrite: {
-      "^/api-railway": "/qwe",
+      "^/vless-bcdeaea2-5e91-46ea-8ef0-5b37e394faa7": "/qwe",
     },
     onProxyReq: function onProxyReq(proxyReq, req, res) {},
   })
