@@ -66,7 +66,7 @@ app.use(
     changeOrigin: true, 
     ws: true, 
     pathRewrite: {
-      "^/vless-bcdeaea2-5e91-46ea-8ef0-5b37e394faa7": "/qwe",
+      "^/vmess-bcdeaea2-5e91-46ea-8ef0-5b37e394faa7": "/qwe",
     },
     onProxyReq: function onProxyReq(proxyReq, req, res) {},
   })
