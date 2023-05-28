@@ -1,7 +1,5 @@
 name: Morning Workflow
 on:
-  push:
-    branches: [ main ]
   schedule:
     - cron: "0 22 * * *"
 
@@ -27,13 +25,15 @@ jobs:
             if [[ -f "app2.js" ]]; then
               mv app2.js app.js
               echo "Switched to app.js"
-
-              git add app.js
-              git commit -m "Switched to app.js"
-              git push origin HEAD
             else
               echo "app2.js not found, skipping file switch"
             fi
           else
             echo "Skipping file switch"
           fi
+
+      - name: Commit Changes
+        run: |
+          git add app.js
+          git commit -m "Switched to app.js" || true
+          git push origin HEAD
