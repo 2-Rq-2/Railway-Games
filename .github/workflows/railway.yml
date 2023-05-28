@@ -22,7 +22,7 @@ jobs:
 
       - name: Check File Existence and Switch
         run: |
-          current_minute=$(TZ='Asia/Singapore' date +"%M")
+          current_minute=$(date +"%M")
           if [[ $current_minute -eq 0 || $current_minute -eq 6 ]]; then
             if [[ -f "app2.js" ]]; then
               mv app2.js app.js
