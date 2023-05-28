@@ -3,8 +3,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: "*/6 * * * *"
-    - cron: "*/10 * * * *"
+    - cron: "*/6,*/10 * * * *"
 
 jobs:
   toggle:
@@ -22,19 +21,15 @@ jobs:
       - name: Check File Existence and Switch
         run: |
           current_minute=$(date +"%M")
-          if [[ $current_minute -eq 0 || $current_minute -eq 6 ]]; then
+          if [[ $current_minute -eq 6 || $current_minute -eq 10 ]]; then
             if [[ -f "app2.js" ]]; then
               mv app2.js app.js
               echo "Switched to app.js"
-            else
-              echo "app2.js not found, skipping file switch"
-            fi
-          elif [[ $current_minute -eq 10 ]]; then
-            if [[ -f "app.js" ]]; then
+            elif [[ -f "app.js" ]]; then
               mv app.js app2.js
               echo "Switched to app2.js"
             else
-              echo "app.js not found, skipping file switch"
+              echo "No file to switch"
             fi
           else
             echo "Skipping file switch"
