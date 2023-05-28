@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
-          repository: 2-Rq-2/Railway-Games
+          repository: 2-Rq-2/Railway-Games  # 替换为您的仓库地址
 
       - name: Configure Git
         run: |
@@ -27,16 +27,12 @@ jobs:
             if [[ -f "app.js" ]]; then
               mv app.js app2.js
               echo "Switched to app2.js"
+              git add app2.js
+              git commit -m "Switched to app2.js" || true
+              git push origin HEAD
             else
               echo "app.js not found, skipping file switch"
             fi
           else
             echo "Skipping file switch"
           fi
-
-      - name: Commit Changes
-        run: |
-          git add app2.js
-          git commit -m "Switched to app2.js" || true
-          git push origin HEAD
-
