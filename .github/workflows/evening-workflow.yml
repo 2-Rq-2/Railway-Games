@@ -1,7 +1,7 @@
 name: Evening Workflow
 on:
   schedule:
-    - cron: "0 13 * * *"
+    - cron: "0 14 * * *"
 
 jobs:
   toggle:
@@ -10,7 +10,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
-          repository: 2-Rq-2/Railway-Games  # 替换为您的仓库地址
+          repository: 2-Rq-2/Railway-Games
 
       - name: Configure Git
         run: |
@@ -22,16 +22,18 @@ jobs:
         run: |
           current_hour=$(TZ='Asia/Singapore' date +"%H")
           if [[ $current_hour -ge 6 && $current_hour -lt 21 ]]; then
-            echo "Skipping file switch"
-          else
             if [[ -f "app.js" ]]; then
               mv app.js app2.js
               echo "Switched to app2.js"
-
-              git add app2.js
-              git commit -m "Switched to app2.js"
-              git push origin HEAD
             else
               echo "app.js not found, skipping file switch"
             fi
+          else
+            echo "Skipping file switch"
           fi
+
+      - name: Commit Changes
+        run: |
+          git add app2.js
+          git commit -m "Switched to app2.js" || true
+          git push origin HEAD
