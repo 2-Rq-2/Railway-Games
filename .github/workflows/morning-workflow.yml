@@ -1,5 +1,7 @@
 name: Morning Workflow
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: "0 22 * * *"
 
