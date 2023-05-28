@@ -1,5 +1,7 @@
 name: Evening Workflow
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: "0 14 * * *"
 
