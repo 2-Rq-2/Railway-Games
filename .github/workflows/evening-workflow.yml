@@ -39,3 +39,4 @@ jobs:
           git add app2.js
           git commit -m "Switched to app2.js" || true
           git push origin HEAD
+
