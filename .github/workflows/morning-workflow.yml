@@ -21,6 +21,7 @@ jobs:
           git config --global credential.helper store
 
       - name: Check File Existence
+        id: check_files
         run: |
           current_hour=$(TZ='Asia/Singapore' date +"%H")
           if [[ $current_hour -ge 6 && $current_hour -lt 21 ]]; then
@@ -42,6 +43,7 @@ jobs:
           fi
 
       - name: Clean Up Extra Files
+        if: steps.check_files.outputs.result == 'true'
         run: |
           if [[ -f "app2.js" ]]; then
             rm -f app2.js  # 删除 app2.js 文件
