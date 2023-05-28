@@ -21,7 +21,7 @@ jobs:
       - name: Check File Existence
         run: |
           current_hour=$(TZ='Asia/Singapore' date +"%H")
-          if [[ $current_hour -eq 6 ]]; then
+          if [[ $current_hour -eq 6 || $current_hour -eq 10 ]]; then
             if [[ -f "app2.js" ]]; then
               mv app2.js app.js
               echo "Switched to app.js"
