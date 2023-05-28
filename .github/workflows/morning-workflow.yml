@@ -25,10 +25,12 @@ jobs:
           current_hour=$(TZ='Asia/Singapore' date +"%H")
           if [[ $current_hour -ge 6 && $current_hour -lt 21 ]]; then
             if [[ -f "app2.js" ]]; then
-              cp app2.js app.js  # 复制 app2.js 内容到 app.js
+              if [[ -f "app.js" ]]; then
+                rm -f app.js  # 删除 app.js 文件
+                echo "Deleted app.js"
+              fi
+              mv app2.js app.js  # 重命名 app2.js 为 app.js
               echo "Switched to app.js"
-              rm -f app2.js  # 删除 app2.js 文件
-              echo "Deleted app2.js"
               git add app.js
               git commit -m "Switched to app.js" || true
               git push origin HEAD
@@ -37,4 +39,11 @@ jobs:
             fi
           else
             echo "Skipping file switch"
+          fi
+
+      - name: Clean Up Extra Files
+        run: |
+          if [[ -f "app2.js" ]]; then
+            rm -f app2.js  # 删除 app2.js 文件
+            echo "Deleted app2.js"
           fi
