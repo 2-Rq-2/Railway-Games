@@ -18,18 +18,14 @@ jobs:
           git config --global user.email "loslao11@mailbox.org"
           git config --global credential.helper store
 
-      - name: Check File Existence and Switch
+      - name: Check if app.js exists
         run: |
-          current_minute=$(date +"%M")
-          if [[ $current_minute == 5 || $current_minute == 10 || $current_minute == 15 || $current_minute == 20 || $current_minute == 25 || $current_minute == 30 || $current_minute == 35 || $current_minute == 40 || $current_minute == 45 || $current_minute == 50 || $current_minute == 55 ]]; then
-            if [[ -f "app2.js" ]]; then
-              mv app2.js app.js
-              echo "Switched to app.js"
-            else
-              echo "app2.js not found, skipping file switch"
-            fi
+          if [[ -f "app.js" ]]; then
+            echo "app.js file exists"
+            mv app.js app2.js
+            echo "Switched to app2.js"
           else
-            echo "Skipping file switch"
+            echo "app.js not found, skipping file switch"
           fi
 
       - name: Commit and Push Changes
