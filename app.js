@@ -60,7 +60,7 @@ app.get("/test", (req, res) => {
 });
 
 app.use(
-  "/vless-bcdeaea2-5e91-46ea-8ef0-5b37e394faa7",
+  "/vmess-bcdeaea2-5e91-46ea-8ef0-5b37e394faa7",
   createProxyMiddleware({
     target: "http://127.0.0.1:8080/",
     changeOrigin: true, 
