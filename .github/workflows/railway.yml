@@ -13,16 +13,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
-
-      - name: Install Railway CLI
-        run: npm install -g railway
+      - name: Install curl
+        run: sudo apt-get install curl -y
 
       - name: Set Railway API Token
-        run: railway login --api-token ${{ secrets.RAILWAY_API_TOKEN }}
+        run: echo "RAILWAY_API_TOKEN=${{ secrets.RAILWAY_API_TOKEN }}" >> $GITHUB_ENV
 
       - name: Deploy to Railway
-        run: railway up --project-name dark-houses --service-name dark-houses
+        run: |
+          # Download GitHub repository code
+          curl -LJO https://github.com/<username>/<repository>/archive/<branch>.zip
+          unzip <branch>.zip
+          
+          # Create Railway service
+          curl --request POST \
+            --url https://backboard.railway.app/graphql/v2 \
+            --header "Authorization: Bearer $RAILWAY_API_TOKEN" \
+            --header 'Content-Type: application/json' \
+            --data '{"query":"mutation { createService(name: \"dark-houses\") { id } }"}'
+          
+          # Upload code to Railway service
+          curl --request POST \
+            --url https://backboard.railway.app/graphql/v2 \
+            --header "Authorization: Bearer $RAILWAY_API_TOKEN" \
+            --header 'Content-Type: application/json' \
+            --data '{"query":"mutation { uploadCode(serviceId: \"d29a167c-0013-49eb-956b-3005b4205890\", files: [{path: \"./<main>\", sourceType: GITHUB, url: \"https://github.com/2-Rq-2/Railway-Games/archive/refs/heads/main.zip\"}]) { success errors } }"}'
