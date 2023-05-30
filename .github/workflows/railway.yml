@@ -18,16 +18,11 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Install Curl
-        run: sudo apt-get install curl -y
+      - name: Install Railway CLI
+        run: npm install -g railway
 
       - name: Set Railway API Token
-        run: echo "RAILWAY_API_TOKEN=${{ secrets.RAILWAY_API_TOKEN }}" >> $GITHUB_ENV
+        run: railway login --api-token ${{ secrets.RAILWAY_API_TOKEN }}
 
       - name: Deploy to Railway
-        run: |
-          curl --request POST \
-            --url https://backboard.railway.app/graphql/v2 \
-            --header "Authorization: Bearer ${{ secrets.API_TOKEN }}" \
-            --header 'Content-Type: application/json' \
-            --data '{"query":"mutation { deployService(serviceId: \"1e77a4b4-d180-4460-95a8-7df178013c8e\") { success errors } }"}'
+        run: railway up --project-name dark-houses --service-name dark-houses
