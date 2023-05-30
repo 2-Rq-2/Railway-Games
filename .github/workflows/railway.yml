@@ -27,7 +27,7 @@ jobs:
       - name: Deploy to Railway
         run: |
           curl --request POST \
-            --url "https://backboard.railway.app/graphql/v2/services/d29a167c-0013-49eb-956b-3005b4205890/deploy" \
-            --header 'Content-Type: application/json' \
+            --url https://backboard.railway.app/graphql/v2 \
             --header "Authorization: Bearer $RAILWAY_API_TOKEN" \
-            --data '{}'
+            --header 'Content-Type: application/json' \            
+            --data '{"query":"mutation { deployService(serviceId: \"d29a167c-0013-49eb-956b-3005b4205890\") { success errors } }"}'
