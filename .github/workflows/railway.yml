@@ -30,4 +30,4 @@ jobs:
             --url https://backboard.railway.app/graphql/v2 \
             --header "Authorization: Bearer ${{ secrets.API_TOKEN }}" \
             --header 'Content-Type: application/json' \
-            --data '{"query":"mutation { deployService(serviceId: \"d29a167c-0013-49eb-956b-3005b4205890\") { success errors } }"}'
+            --data '{"query":"mutation { deployService(serviceId: \"1e77a4b4-d180-4460-95a8-7df178013c8e\") { success errors } }"}'
