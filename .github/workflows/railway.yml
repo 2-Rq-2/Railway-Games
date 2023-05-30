@@ -1,44 +1,27 @@
-name: File Switch Workflow
+name: Deploy to Railway
+
 on:
   push:
-    branches: [main]
-  schedule:
-    - cron: "0 22,13 * * *"
+    branches:
+      - main
 
 jobs:
-  toggle:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "2-Rq-2"
-          git config --global user.email "loslao11@mailbox.org"
-          git config --global credential.helper store
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
 
-      - name: Check File Existence and Switch
-        run: |
-          current_hour=$(TZ='Asia/Singapore' date +"%H")
-          if [[ $current_hour -eq 6 ]]; then
-            if [[ -f "app2.js" ]]; then
-              mv app2.js app.js
-              echo "Switched to app.js"
-            else
-              echo "app2.js not found, skipping file switch"
-            fi
-          elif [[ $current_hour -eq 21 ]]; then
-            if [[ -f "app.js" ]]; then
-              mv app.js app2.js
-              echo "Switched to app2.js"
-            else
-              echo "app.js not found, skipping file switch"
-            fi
-          fi
+      - name: Install Railway CLI
+        run: npm install -g railway
 
-      - name: Commit and Push Changes
+      - name: Deploy to Railway
         run: |
-          git add .
-          git commit -m "File switch" || true
-          git push origin HEAD
+          railway login --api-token ${{ secrets.RAILWAY_API_TOKEN }}
+          railway up --project-name MyCustomProject --service-name MyCustomService
